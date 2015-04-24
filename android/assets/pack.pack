@@ -1,0 +1,82 @@
+
+pack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+black
+  rotate: false
+  xy: 1, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+blackhead
+  rotate: false
+  xy: 13, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+blue
+  rotate: false
+  xy: 25, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+bluehead
+  rotate: false
+  xy: 37, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+green
+  rotate: false
+  xy: 49, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+greenhead
+  rotate: false
+  xy: 61, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+red
+  rotate: false
+  xy: 73, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+redhead
+  rotate: false
+  xy: 85, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+warp
+  rotate: false
+  xy: 97, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+whitehead
+  rotate: false
+  xy: 109, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+yellowhead
+  rotate: false
+  xy: 121, 1
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
