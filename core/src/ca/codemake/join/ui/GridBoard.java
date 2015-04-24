@@ -151,8 +151,8 @@ public class GridBoard extends Box {
         gridTiles[r][c].hasGlow = false;
         gridTiles[r][c].originalColor = color;
         gridTiles[r][c].color = color;
-        gridTiles[r][c].width = gridTiles[r][c].maxWidth = size - 5;
-        gridTiles[r][c].height = gridTiles[r][c].maxHeight = size - 5;
+        gridTiles[r][c].width = gridTiles[r][c].maxWidth = size - 10;
+        gridTiles[r][c].height = gridTiles[r][c].maxHeight = size - 10;
 //        if(r-1>0) {
             gridTiles[r][c].x = gridTiles[r][c].realX;
 //        }
@@ -168,26 +168,26 @@ public class GridBoard extends Box {
             gridTiles[r][c].remove = false;
         }
         else if(c+1 <= col-1 ) {
-            if(!gridTiles[r][c+1].remove) {
-                moveDown(r, c+1);
-                gridTiles[r][c].remove = false;
-                gridTiles[r][c+1].remove = true;
-                gridTiles[r][c].x = gridTiles[r][c].realX;
-                gridTiles[r][c].y = gridTiles[r][c].realY;
-                gridTiles[r][c].i = gridTiles[r][c+1].i;
-                gridTiles[r][c].j = gridTiles[r][c+1].j;
-                gridTiles[r][c].width = gridTiles[r][c+1].maxWidth;
-                gridTiles[r][c].height = gridTiles[r][c+1].maxHeight;
-                gridTiles[r][c].color = gridTiles[r][c+1].color;
-                gridTiles[r][c].originalColor = gridTiles[r][c+1].originalColor;
-
-                gridTiles[r][c].checked = false;
-                gridTiles[r][c].removed = false;
-                gridTiles[r][c].glow = false;
-                gridTiles[r][c].hasGlow = false;
-
-//                gridTiles[r][c+1].removed = true;
-            }
+//            if(!gridTiles[r][c+1].remove) {
+//                moveDown(r, c+1);
+//                gridTiles[r][c].remove = false;
+//                gridTiles[r][c+1].remove = true;
+//                gridTiles[r][c].x = gridTiles[r][c].realX;
+//                gridTiles[r][c].y = gridTiles[r][c].realY;
+//                gridTiles[r][c].i = gridTiles[r][c+1].i;
+//                gridTiles[r][c].j = gridTiles[r][c+1].j;
+//                gridTiles[r][c].width = gridTiles[r][c+1].maxWidth;
+//                gridTiles[r][c].height = gridTiles[r][c+1].maxHeight;
+//                gridTiles[r][c].color = gridTiles[r][c+1].color;
+//                gridTiles[r][c].originalColor = gridTiles[r][c+1].originalColor;
+//
+//                gridTiles[r][c].checked = false;
+//                gridTiles[r][c].removed = false;
+//                gridTiles[r][c].glow = false;
+//                gridTiles[r][c].hasGlow = false;
+//
+////                gridTiles[r][c+1].removed = true;
+//            }
         }
     }
 

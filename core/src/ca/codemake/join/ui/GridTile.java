@@ -30,6 +30,8 @@ public class GridTile extends Box{
     public boolean hasGlow;
     public int i, j;
 
+
+
     private TextureRegion red;
     private TextureRegion green;
     private TextureRegion blue;
@@ -38,7 +40,8 @@ public class GridTile extends Box{
         this.originalColor = color;
         this.color = color;
         realX = this.x = x + 5;
-        realY = this.y = y + 5;
+        realY = y + 5;
+        this.y = Join.HEIGHT;
         maxWidth = this.width = width - 10;
         maxHeight = this.height = height - 10;
         checked = false;
@@ -92,6 +95,12 @@ public class GridTile extends Box{
     }
 
     public void update(float dt) {
+        if(y > realY) {
+            y -= dt * 200;
+            if(y <= realY) {
+                y = realY;
+            }
+        }
 //        if(!remove) {
 //            if (width < maxWidth && height < maxHeight) {
 //                x = realX;
