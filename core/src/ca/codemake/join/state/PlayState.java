@@ -29,10 +29,30 @@ public class PlayState extends State {
     }
 
     public void createBoard() {
-        row = 4;
-        col = 5;
+        row = 5;
+        col = 10;
 
-        size = (Join.WIDTH > Join.HEIGHT ? Join.HEIGHT : Join.WIDTH) / (row > col ? row : col);
+        if(Join.WIDTH > Join.HEIGHT && row > col) {
+            size = Join.HEIGHT / row;
+        } else if(Join.WIDTH < Join.HEIGHT && row < col) {
+            size = Join.WIDTH / col;
+        } else if(Join.WIDTH < Join.HEIGHT && row > col) {
+            size = Join.HEIGHT / row;
+        } else if(Join.WIDTH > Join.HEIGHT && row < col) {
+            size = Join.WIDTH / col;
+        } else if(Join.WIDTH == Join.HEIGHT && row > col) {
+            size = Join.WIDTH / row;
+        } else if(Join.WIDTH == Join.HEIGHT && row < col) {
+            size = Join.WIDTH / col;
+        } else if(Join.WIDTH > Join.HEIGHT && row == col) {
+            size = Join.HEIGHT / row;
+        } else if(Join.WIDTH == Join.HEIGHT && row < col) {
+            size = Join.WIDTH / col;
+        } else if(Join.WIDTH == Join.HEIGHT && row == col) {
+            size = Join.WIDTH / row;
+        }
+//        size = (Join.WIDTH > Join.HEIGHT ? Join.HEIGHT : Join.WIDTH) / (row > col ? row : col);
+//        size = Join.WIDTH / col;
 
         x = Join.WIDTH / 2;
         y = Join.HEIGHT / 2;
