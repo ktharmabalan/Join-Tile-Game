@@ -30,11 +30,13 @@ public class GridTile extends Box{
     public boolean hasGlow;
     public int i, j;
 
-
-
     private TextureRegion red;
     private TextureRegion green;
     private TextureRegion blue;
+    private TextureRegion redhead;
+    private TextureRegion greenhead;
+    private TextureRegion bluehead;
+
 
     public GridTile(int color, float x, float y, float width, float height, int i, int j) {
         this.originalColor = color;
@@ -57,6 +59,9 @@ public class GridTile extends Box{
         red = Join.tal.getAtlas("pack").findRegion("red");
         green = Join.tal.getAtlas("pack").findRegion("green");
         blue = Join.tal.getAtlas("pack").findRegion("blue");
+        redhead = Join.tal.getAtlas("pack").findRegion("redhead");
+        greenhead = Join.tal.getAtlas("pack").findRegion("greenhead");
+        bluehead = Join.tal.getAtlas("pack").findRegion("bluehead");
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, Join.WIDTH, Join.HEIGHT);
@@ -96,7 +101,7 @@ public class GridTile extends Box{
 
     public void update(float dt) {
         if(y > realY) {
-            y -= dt * 200;
+            y -= dt * 1000;
             if(y <= realY) {
                 y = realY;
             }
@@ -189,7 +194,23 @@ public class GridTile extends Box{
             } else if (getDrawColor() == 3) {
                 sb.draw(blue, getX(), getY(), getWidth(), getHeight());
             } else if (getDrawColor() == 4) {
+                sb.draw(redhead, getX(), getY(), getWidth(), getHeight());
+            } else if (getDrawColor() == 5) {
+                sb.draw(greenhead, getX(), getY(), getWidth(), getHeight());
+            } else if (getDrawColor() == 6) {
+                sb.draw(bluehead, getX(), getY(), getWidth(), getHeight());
             }
 //        }
+    }
+
+    public void printData() {
+        System.out.println("X: " + x + " | Y: " + y);
+        System.out.println("Checked: " + checked);
+        System.out.println("Remove: " + remove);
+        System.out.println("Shrink: " + shrink);
+        System.out.println("Removed: " + removed);
+        System.out.println("Glow: " + glow);
+        System.out.println("hasGlow: " + hasGlow);
+        System.out.println("-----------------------------------------------------------------");
     }
 }

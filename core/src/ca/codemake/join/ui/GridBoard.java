@@ -2,7 +2,6 @@ package ca.codemake.join.ui;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
@@ -29,12 +28,10 @@ public class GridBoard extends Box {
 
     private OrthographicCamera cam;
 
-    private TextureRegion redhead;
-    private TextureRegion greenhead;
-    private TextureRegion bluehead;
-
     private Random rand;
     private int color;
+
+//    public GridTile[] chain;
 
 //    private Array<Glow> glows;
 
@@ -52,12 +49,8 @@ public class GridBoard extends Box {
         this.size = size;
         gridTiles = new GridTile[row][col];
 
-        redhead = Join.tal.getAtlas("pack").findRegion("redhead");
-        greenhead = Join.tal.getAtlas("pack").findRegion("greenhead");
-        bluehead = Join.tal.getAtlas("pack").findRegion("bluehead");
-
-        xOffset = (Join.WIDTH - width) / 2;
-        yOffset = (Join.HEIGHT - height) / 2;
+        xOffset = (Join.WIDTH - width / 2);
+        yOffset = (Join.HEIGHT - height / 2);
 
         glows = new Array<Glow>();
 
@@ -66,10 +59,10 @@ public class GridBoard extends Box {
 
     private void createGrid() {
         rand = new Random();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
                 color = rand.nextInt(3 - 1 + 1) + 1;
-                gridTiles[i][j] = new GridTile(color, i * size + (getX() - getWidth() / 2), j * size, size, size, i, j);
+                gridTiles[j][i] = new GridTile(color, j * size + (getX() - getWidth() / 2), i * size, size, size, i, j);
             }
         }
     }
@@ -80,7 +73,6 @@ public class GridBoard extends Box {
             glows.get(j).update(dt);
 
             if(glows.get(j).shouldRemove()) {
-
                 GridTile gt = gridTiles[glows.get(j).i][glows.get(j).j];
 //                gt.remove = false;
 //                gt.checked = false;
@@ -94,21 +86,15 @@ public class GridBoard extends Box {
             }
         }
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if(gridTiles[i][j].glow && !gridTiles[i][j].hasGlow) {
-                    glows.add(new Glow(gridTiles[i][j].color, gridTiles[i][j].x, gridTiles[i][j].y, gridTiles[i][j].width, gridTiles[i][j].height, i, j));
-                    gridTiles[i][j].hasGlow = true;
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                if(gridTiles[j][i].glow && !gridTiles[j][i].hasGlow) {
+                    glows.add(new Glow(gridTiles[j][i].color, gridTiles[j][i].x, gridTiles[j][i].y, gridTiles[j][i].width, gridTiles[j][i].height, i, j));
+                    gridTiles[j][i].hasGlow = true;
+//                    System.out.println("i: " + i + ", j: " + j);
                 }
-//                if(gridTiles[i][j].remove) {
-//                    moveDown(i, j);
-//                }
-//                if(gridTiles[i][j].removed) {
-//                    respawn(i, j);
-//                }
-                gridTiles[i][j].update(dt);
+                gridTiles[j][i].update(dt);
             }
-
         }
     }
 
@@ -119,9 +105,9 @@ public class GridBoard extends Box {
             gl.render(sb);
         }
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                gridTiles[i][j].render(sb);
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                gridTiles[j][i].render(sb);
             }
         }
 
@@ -134,16 +120,15 @@ public class GridBoard extends Box {
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.rect(0, 0, Join.WIDTH, Join.HEIGHT);
         shapeRenderer.setColor(1, 1, 1, 1);
-//        shapeRenderer.setColor(0, 0, 0, 1);
+        shapeRenderer.setColor(0, 0, 0, 1);
         shapeRenderer.rect(x - width / 2, y - height / 2, width, height);
         shapeRenderer.end();
     }
 
     private void respawn(int r, int c) {
-//        System.out.println("Respawn");
         color = rand.nextInt(3 - 1 + 1) + 1;
-        gridTiles[r][c].i = gridTiles[r][c].i;
-        gridTiles[r][c].j = gridTiles[r][c].j;
+//        gridTiles[r][c].i = gridTiles[r][c].i;
+//        gridTiles[r][c].j = gridTiles[r][c].j;
         gridTiles[r][c].removed = false;
         gridTiles[r][c].remove = false;
         gridTiles[r][c].checked = false;
@@ -157,7 +142,8 @@ public class GridBoard extends Box {
             gridTiles[r][c].x = gridTiles[r][c].realX;
 //        }
 //        if(c-1>0) {
-            gridTiles[r][c].y = gridTiles[r][c].realY;
+//            gridTiles[r][c].y = gridTiles[r][c].realY;
+            gridTiles[r][c].y = Join.HEIGHT;
 //        }
 //        System.out.println(gridTiles[r][c].toString());
     }
@@ -168,26 +154,28 @@ public class GridBoard extends Box {
             gridTiles[r][c].remove = false;
         }
         else if(c+1 <= col-1 ) {
-//            if(!gridTiles[r][c+1].remove) {
-//                moveDown(r, c+1);
-//                gridTiles[r][c].remove = false;
-//                gridTiles[r][c+1].remove = true;
-//                gridTiles[r][c].x = gridTiles[r][c].realX;
-//                gridTiles[r][c].y = gridTiles[r][c].realY;
-//                gridTiles[r][c].i = gridTiles[r][c+1].i;
-//                gridTiles[r][c].j = gridTiles[r][c+1].j;
-//                gridTiles[r][c].width = gridTiles[r][c+1].maxWidth;
-//                gridTiles[r][c].height = gridTiles[r][c+1].maxHeight;
-//                gridTiles[r][c].color = gridTiles[r][c+1].color;
-//                gridTiles[r][c].originalColor = gridTiles[r][c+1].originalColor;
-//
-//                gridTiles[r][c].checked = false;
-//                gridTiles[r][c].removed = false;
-//                gridTiles[r][c].glow = false;
-//                gridTiles[r][c].hasGlow = false;
-//
-////                gridTiles[r][c+1].removed = true;
-//            }
+            if(!gridTiles[r][c+1].remove) {
+                moveDown(r, c+1);
+                gridTiles[r][c].remove = false;
+                gridTiles[r][c+1].remove = true;
+                gridTiles[r][c].x = gridTiles[r][c].realX;
+                gridTiles[r][c].y = gridTiles[r][c].realY;
+                gridTiles[r][c].y = Join.HEIGHT;
+                gridTiles[r][c].i = gridTiles[r][c+1].i;
+                gridTiles[r][c].j = gridTiles[r][c+1].j;
+                gridTiles[r][c].width = gridTiles[r][c+1].maxWidth;
+                gridTiles[r][c].height = gridTiles[r][c+1].maxHeight;
+                gridTiles[r][c].color = gridTiles[r][c+1].color;
+                gridTiles[r][c].originalColor = gridTiles[r][c+1].originalColor;
+
+                gridTiles[r][c].checked = false;
+                gridTiles[r][c].removed = false;
+                gridTiles[r][c].glow = false;
+                gridTiles[r][c].hasGlow = false;
+//                System.out.println("Moving x: " + r + " y2: " + (c+1) + " to y1: " + c);
+
+//                gridTiles[r][c+1].removed = true;
+            }
         }
     }
 
@@ -195,18 +183,18 @@ public class GridBoard extends Box {
         shapeRenderer = new ShapeRenderer();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if(gridTiles[i][j].getDrawColor() == 1) {
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                if(gridTiles[j][i].getDrawColor() == 1) {
                     shapeRenderer.setColor(1, 0, 0, 0.5f);
-                } else if(gridTiles[i][j].getDrawColor() == 2) {
+                } else if(gridTiles[j][i].getDrawColor() == 2) {
                     shapeRenderer.setColor(0, 1, 0, 0.5f);
-                } else if(gridTiles[i][j].getDrawColor() == 3) {
+                } else if(gridTiles[j][i].getDrawColor() == 3) {
                     shapeRenderer.setColor(0, 0, 1, 0.5f);
-                } else if(gridTiles[i][j].getDrawColor() == 4) {
+                } else if(gridTiles[j][i].getDrawColor() == 4) {
                     shapeRenderer.setColor(0, 0, 0, 0.5f);
                 }
-                shapeRenderer.rect(gridTiles[i][j].getX(), gridTiles[i][j].getY(), gridTiles[i][j].getWidth(), gridTiles[i][j].getHeight());
+                shapeRenderer.rect(gridTiles[j][i].getX(), gridTiles[j][i].getY(), gridTiles[j][i].getWidth(), gridTiles[j][i].getHeight());
             }
         }
         shapeRenderer.end();
@@ -223,8 +211,10 @@ public class GridBoard extends Box {
 
                 gridTiles[gtx][gty].remove = true;
                 gridTiles[gtx - 1][gty].remove = true;
-                removeTiles.add(gridTiles[gtx][gty]);
-                removeTiles.add(gridTiles[gtx - 1][gty]);
+                if(!removeTiles.contains(gridTiles[gtx][gty]))
+                    removeTiles.add(gridTiles[gtx][gty]);
+                if(!removeTiles.contains(gridTiles[gtx - 1][gty]))
+                    removeTiles.add(gridTiles[gtx - 1][gty]);
 
                 checkAround(gtx - 1, gty);
                 return true;
@@ -244,8 +234,10 @@ public class GridBoard extends Box {
 
                 gridTiles[gtx][gty].remove = true;
                 gridTiles[gtx + 1][gty].remove = true;
-                removeTiles.add(gridTiles[gtx][gty]);
-                removeTiles.add(gridTiles[gtx + 1][gty]);
+                if(!removeTiles.contains(gridTiles[gtx][gty]))
+                    removeTiles.add(gridTiles[gtx][gty]);
+                if(!removeTiles.contains(gridTiles[gtx + 1][gty]))
+                    removeTiles.add(gridTiles[gtx + 1][gty]);
 
                 checkAround(gtx + 1, gty);
                 return true;
@@ -265,8 +257,10 @@ public class GridBoard extends Box {
 
                 gridTiles[gtx][gty].remove = true;
                 gridTiles[gtx][gty - 1].remove = true;
-                removeTiles.add(gridTiles[gtx][gty]);
-                removeTiles.add(gridTiles[gtx][gty - 1]);
+                if(!removeTiles.contains(gridTiles[gtx][gty]))
+                    removeTiles.add(gridTiles[gtx][gty]);
+                if(!removeTiles.contains(gridTiles[gtx][gty - 1]))
+                    removeTiles.add(gridTiles[gtx][gty - 1]);
 
                 checkAround(gtx, gty - 1);
                 return true;
@@ -286,8 +280,10 @@ public class GridBoard extends Box {
 
                 gridTiles[gtx][gty].remove = true;
                 gridTiles[gtx][gty + 1].remove = true;
-                removeTiles.add(gridTiles[gtx][gty]);
-                removeTiles.add(gridTiles[gtx][gty + 1]);
+                if(!removeTiles.contains(gridTiles[gtx][gty]))
+                    removeTiles.add(gridTiles[gtx][gty]);
+                if(!removeTiles.contains(gridTiles[gtx][gty + 1]))
+                    removeTiles.add(gridTiles[gtx][gty + 1]);
 
                 checkAround(gtx, gty + 1);
                 return true;
@@ -316,6 +312,9 @@ public class GridBoard extends Box {
 //        }
 //        System.out.println(colo);
 
+        if((gty + 1 <= col - 1) && (!gridTiles[gtx][gty + 1].checked)) {
+            sameColorTop(gtx, gty);
+        }
         if((gtx - 1 >= 0) && (!gridTiles[gtx - 1][gty].checked)) {
             sameColorLeft(gtx, gty);
         }
@@ -325,18 +324,18 @@ public class GridBoard extends Box {
         if((gty - 1 >= 0) && (!gridTiles[gtx][gty - 1].checked)) {
             sameColorBottom(gtx, gty);
         }
-        if((gty + 1 <= col - 1) && (!gridTiles[gtx][gty + 1].checked)) {
-            sameColorTop(gtx, gty);
-        }
     }
 
     public void removeSelected(int gtx, int gty) {
         removeTiles = new ArrayList<GridTile>();
         checkAround(gtx, gty);
 
+//        Collections.reverse(removeTiles);
+
         for(GridTile gt : removeTiles) {
 //            gt.checked = false;
 //            gt.remove = false;
+            System.out.println("i: " + gt.i + ", j: " + gt.j);
             gt.glow = true;
         }
 

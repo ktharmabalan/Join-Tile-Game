@@ -1,6 +1,7 @@
 package ca.codemake.join.state;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codemake.join.ui.GridBoard;
@@ -28,22 +29,22 @@ public class PlayState extends State {
     }
 
     public void createBoard() {
-        row = 5;
+        row = 4;
         col = 5;
 
-        size = (Join.WIDTH > Join.HEIGHT ? Join.HEIGHT : Join.WIDTH) / col;
+        size = (Join.WIDTH > Join.HEIGHT ? Join.HEIGHT : Join.WIDTH) / (row > col ? row : col);
 
         x = Join.WIDTH / 2;
         y = Join.HEIGHT / 2;
 
-        width = size * row;
-        height = size * col;
+        width = size * col;
+        height = size * row;
 
         gridBoard = new GridBoard(x, y, width, height, row, col, size);
     }
 
     public void handleInput(float dt) {
-        if(proceed && Gdx.input.justTouched()) {
+        if(proceed && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             mouse.x = Gdx.input.getX();
             mouse.y = Gdx.input.getY();
             cam.unproject(mouse);
@@ -54,6 +55,19 @@ public class PlayState extends State {
 
                 proceed = false;
                 gridBoard.removeSelected(r, c);
+            }
+        } else if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+            mouse.x = Gdx.input.getX();
+            mouse.y = Gdx.input.getY();
+            cam.unproject(mouse);
+
+            if (mouse.x < Join.WIDTH - gridBoard.xOffset && mouse.x > gridBoard.xOffset && mouse.y < Join.HEIGHT && mouse.y > 0) {
+                int r = (int) ((mouse.x - gridBoard.xOffset) / size);
+                int c = (int) (mouse.y / size);
+
+//                proceed = false;
+//                gridBoard.removeSelected(r, c);
+                gridBoard.gridTiles[r][c].printData();
             }
         }
     }
