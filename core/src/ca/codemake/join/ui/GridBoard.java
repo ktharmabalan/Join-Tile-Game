@@ -49,8 +49,8 @@ public class GridBoard extends Box {
         this.size = size;
         gridTiles = new GridTile[row][col];
 
-        xOffset = (Join.WIDTH - width / 2);
-        yOffset = (Join.HEIGHT - height / 2);
+        xOffset = (Join.WIDTH - width) / 2;
+        yOffset = (Join.HEIGHT - height) / 2;
 
         glows = new Array<Glow>();
 
@@ -59,41 +59,41 @@ public class GridBoard extends Box {
 
     private void createGrid() {
         rand = new Random();
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int c = 0; c < col; c++) {
+            for (int r = 0; r < row; r++) {
                 color = rand.nextInt(3 - 1 + 1) + 1;
-                gridTiles[j][i] = new GridTile(color, j * size + (getX() - getWidth() / 2), i * size, size, size, i, j);
+                gridTiles[r][c] = new GridTile(color, c * size + (getX() - getWidth() / 2), r * size + (getY() - getHeight() / 2), size, size, r, c);
             }
         }
     }
 
 
     public void update(float dt) {
-        for (int j = 0; j < glows.size; j++) {
-            glows.get(j).update(dt);
+        for (int g = 0; g < glows.size; g++) {
+            glows.get(g).update(dt);
 
-            if(glows.get(j).shouldRemove()) {
-                GridTile gt = gridTiles[glows.get(j).i][glows.get(j).j];
+            if(glows.get(g).shouldRemove()) {
+                GridTile gt = gridTiles[glows.get(g).r][glows.get(g).c];
 //                gt.remove = false;
 //                gt.checked = false;
                 gt.glow = false;
                 gt.hasGlow = false;
-                glows.removeIndex(j);
-                j--;
+                glows.removeIndex(g);
+                g--;
                 if(gt.remove) {
-                    moveDown(gt.i, gt.j);
+//                    moveDown(gt.r, gt.c);
                 }
             }
         }
 
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
-                if(gridTiles[j][i].glow && !gridTiles[j][i].hasGlow) {
-                    glows.add(new Glow(gridTiles[j][i].color, gridTiles[j][i].x, gridTiles[j][i].y, gridTiles[j][i].width, gridTiles[j][i].height, i, j));
-                    gridTiles[j][i].hasGlow = true;
-//                    System.out.println("i: " + i + ", j: " + j);
+        for (int c = 0; c < col; c++) {
+            for (int r = 0; r < row; r++) {
+                if(gridTiles[r][c].glow && !gridTiles[r][c].hasGlow) {
+                    glows.add(new Glow(gridTiles[r][c].color, gridTiles[r][c].x, gridTiles[r][c].y, gridTiles[r][c].width, gridTiles[r][c].height, r, c));
+                    gridTiles[r][c].hasGlow = true;
+//                    System.out.println("r: " + r + ", c: " + c);
                 }
-                gridTiles[j][i].update(dt);
+                gridTiles[r][c].update(dt);
             }
         }
     }
@@ -105,9 +105,9 @@ public class GridBoard extends Box {
             gl.render(sb);
         }
 
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
-                gridTiles[j][i].render(sb);
+        for (int c = 0; c < col; c++) {
+            for (int r = 0; r < row; r++) {
+                gridTiles[r][c].render(sb);
             }
         }
 
@@ -127,8 +127,8 @@ public class GridBoard extends Box {
 
     private void respawn(int r, int c) {
         color = rand.nextInt(3 - 1 + 1) + 1;
-//        gridTiles[r][c].i = gridTiles[r][c].i;
-//        gridTiles[r][c].j = gridTiles[r][c].j;
+//        gridTiles[r][c].r = gridTiles[r][c].r;
+//        gridTiles[r][c].c = gridTiles[r][c].c;
         gridTiles[r][c].removed = false;
         gridTiles[r][c].remove = false;
         gridTiles[r][c].checked = false;
@@ -161,8 +161,8 @@ public class GridBoard extends Box {
                 gridTiles[r][c].x = gridTiles[r][c].realX;
                 gridTiles[r][c].y = gridTiles[r][c].realY;
                 gridTiles[r][c].y = Join.HEIGHT;
-                gridTiles[r][c].i = gridTiles[r][c+1].i;
-                gridTiles[r][c].j = gridTiles[r][c+1].j;
+                gridTiles[r][c].r = gridTiles[r][c+1].r;
+                gridTiles[r][c].c = gridTiles[r][c+1].c;
                 gridTiles[r][c].width = gridTiles[r][c+1].maxWidth;
                 gridTiles[r][c].height = gridTiles[r][c+1].maxHeight;
                 gridTiles[r][c].color = gridTiles[r][c+1].color;
@@ -183,18 +183,18 @@ public class GridBoard extends Box {
         shapeRenderer = new ShapeRenderer();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
-                if(gridTiles[j][i].getDrawColor() == 1) {
+        for (int c = 0; c < col; c++) {
+            for (int r = 0; r < row; r++) {
+                if(gridTiles[r][c].getDrawColor() == 1) {
                     shapeRenderer.setColor(1, 0, 0, 0.5f);
-                } else if(gridTiles[j][i].getDrawColor() == 2) {
+                } else if(gridTiles[r][c].getDrawColor() == 2) {
                     shapeRenderer.setColor(0, 1, 0, 0.5f);
-                } else if(gridTiles[j][i].getDrawColor() == 3) {
+                } else if(gridTiles[r][c].getDrawColor() == 3) {
                     shapeRenderer.setColor(0, 0, 1, 0.5f);
-                } else if(gridTiles[j][i].getDrawColor() == 4) {
+                } else if(gridTiles[r][c].getDrawColor() == 4) {
                     shapeRenderer.setColor(0, 0, 0, 0.5f);
                 }
-                shapeRenderer.rect(gridTiles[j][i].getX(), gridTiles[j][i].getY(), gridTiles[j][i].getWidth(), gridTiles[j][i].getHeight());
+                shapeRenderer.rect(gridTiles[r][c].getX(), gridTiles[r][c].getY(), gridTiles[r][c].getWidth(), gridTiles[r][c].getHeight());
             }
         }
         shapeRenderer.end();
@@ -335,7 +335,7 @@ public class GridBoard extends Box {
         for(GridTile gt : removeTiles) {
 //            gt.checked = false;
 //            gt.remove = false;
-            System.out.println("i: " + gt.i + ", j: " + gt.j);
+            System.out.println("r: " + gt.r + ", c: " + gt.c);
             gt.glow = true;
         }
 

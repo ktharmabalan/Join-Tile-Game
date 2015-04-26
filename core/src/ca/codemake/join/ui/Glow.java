@@ -30,8 +30,8 @@ public class Glow extends GridTile {
         this.width = width;
         this.height = height;
 
-        this.i = i;
-        this.j = j;
+        this.r = i;
+        this.c = j;
 
         removeGlow = false;
 

@@ -28,7 +28,7 @@ public class GridTile extends Box{
     public boolean removed;
     public boolean glow;
     public boolean hasGlow;
-    public int i, j;
+    public int r, c;
 
     private TextureRegion red;
     private TextureRegion green;
@@ -38,7 +38,7 @@ public class GridTile extends Box{
     private TextureRegion bluehead;
 
 
-    public GridTile(int color, float x, float y, float width, float height, int i, int j) {
+    public GridTile(int color, float x, float y, float width, float height, int r, int c) {
         this.originalColor = color;
         this.color = color;
         realX = this.x = x + 5;
@@ -53,8 +53,8 @@ public class GridTile extends Box{
         glow = false;
         hasGlow = false;
 
-        this.i = i;
-        this. j = j;
+        this.r = r;
+        this.c = c;
 
         red = Join.tal.getAtlas("pack").findRegion("red");
         green = Join.tal.getAtlas("pack").findRegion("green");
