@@ -21,8 +21,6 @@ public class PlayState extends State {
     private int row;
     private int col;
 
-    private float timer;
-
     public static boolean proceed = true;
 
     public PlayState(GSM gsm) {
