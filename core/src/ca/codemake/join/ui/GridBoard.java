@@ -31,10 +31,6 @@ public class GridBoard extends Box {
     private Random rand;
     private int color;
 
-//    public GridTile[] chain;
-
-//    private Array<Glow> glows;
-
     public GridBoard(float x, float y, float width, float height, int row, int col, int size) {
 
         cam = new OrthographicCamera();
@@ -110,7 +106,6 @@ public class GridBoard extends Box {
                 gridTiles[r][c].render(sb);
             }
         }
-
     }
 
     public void drawGrid() {
@@ -121,7 +116,8 @@ public class GridBoard extends Box {
         shapeRenderer.rect(0, 0, Join.WIDTH, Join.HEIGHT);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.setColor(0, 0, 0, 1);
-        shapeRenderer.rect(x - width / 2, y - height / 2, width, height);
+//        shapeRenderer.rect(x - width / 2, y - height / 2, width, height);
+        shapeRenderer.rect(((Join.WIDTH / 2) - ((size * col) / 2)), ((Join.HEIGHT / 2) - ((size * row) / 2)), width, height);
         shapeRenderer.end();
     }
 
@@ -293,25 +289,6 @@ public class GridBoard extends Box {
     }
 
     public void checkAround(int gtx, int gty) {
-//        String colo = "";
-//        switch(gridTiles[gtx][gty].color){
-//            case 1:
-//                colo = "RED";
-//                break;
-//            case 2:
-//                colo = "GREEN";
-//                break;
-//            case 3:
-//                colo = "BLUE";
-//                break;
-//            case 4:
-//                colo = "BLACK";
-//                break;
-//            default:
-//                break;
-//        }
-//        System.out.println(colo);
-
         if((gty + 1 <= col - 1) && (!gridTiles[gtx][gty + 1].checked)) {
             sameColorTop(gtx, gty);
         }
@@ -329,8 +306,6 @@ public class GridBoard extends Box {
     public void removeSelected(int gtx, int gty) {
         removeTiles = new ArrayList<GridTile>();
         checkAround(gtx, gty);
-
-//        Collections.reverse(removeTiles);
 
         for(GridTile gt : removeTiles) {
 //            gt.checked = false;

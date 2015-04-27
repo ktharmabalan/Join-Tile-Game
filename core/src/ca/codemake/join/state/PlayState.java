@@ -21,6 +21,8 @@ public class PlayState extends State {
     private int row;
     private int col;
 
+    private float timer;
+
     public static boolean proceed = true;
 
     public PlayState(GSM gsm) {
@@ -29,7 +31,7 @@ public class PlayState extends State {
     }
 
     public void createBoard() {
-        row = 5;
+        row = 7;
         col = 5;
 
         if(Join.WIDTH > Join.HEIGHT && row > col) {
@@ -78,26 +80,29 @@ public class PlayState extends State {
 
                 proceed = false;
                 gridBoard.removeSelected(c, r);
-            }
-        } else if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            mouse.x = Gdx.input.getX();
-            mouse.y = Gdx.input.getY();
-            cam.unproject(mouse);
-
-            if (mouse.x < Join.WIDTH - gridBoard.xOffset && mouse.x > gridBoard.xOffset && mouse.y < Join.HEIGHT && mouse.y > 0) {
-                int r = (int) ((mouse.x - gridBoard.xOffset) / size);
-                int c = (int) (mouse.y / size);
-
-//                proceed = false;
-//                gridBoard.removeSelected(c, r);
-                gridBoard.gridTiles[r][c].printData();
+//                gridBoard.printXY(c, r);
             }
         }
+//        else if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+//            mouse.x = Gdx.input.getX();
+//            mouse.y = Gdx.input.getY();
+//            cam.unproject(mouse);
+//
+//            if (mouse.x < Join.WIDTH - gridBoard.xOffset && mouse.x > gridBoard.xOffset && mouse.y < Join.HEIGHT && mouse.y > 0) {
+//                int r = (int) ((mouse.x - gridBoard.xOffset) / size);
+//                int c = (int) (mouse.y / size);
+//
+////                proceed = false;
+////                gridBoard.removeSelected(c, r);
+//                gridBoard.gridTiles[c][r].printData();
+//            }
+//        }
     }
 
     public void update(float dt) {
         handleInput(dt);
         gridBoard.update(dt);
+
     }
 
     public void render(SpriteBatch sb) {
